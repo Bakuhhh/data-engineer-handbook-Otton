@@ -1,97 +1,44 @@
 # JobFlow AI
 
-AI Job Hunting Copilot desenvolvido como projeto capstone do bootcamp.
+JobFlow AI é um copiloto de busca de vagas construído no Databricks. O projeto ingere vagas de uma API externa, transforma os dados em camadas Bronze, Silver e Gold, processa descrições de vagas como dados não estruturados, calcula compatibilidade entre perfil e vagas e expõe ferramentas de agente capazes de ler e escrever dados.
 
 ## Objetivo
 
-Criar um copiloto de busca de empregos que ajuda o usuário a encontrar vagas,
-comparar vagas com seu perfil, salvar oportunidades, acompanhar aplicações
-e gerar materiais personalizados para candidatura.
+O objetivo do projeto é ajudar uma pessoa candidata a encontrar, priorizar, salvar e acompanhar vagas de emprego com apoio de dados e automação.
 
-## Requisitos obrigatórios
+O copiloto consegue:
 
-- [ ] Pipeline de dados utilizando Apache Spark
-- [ ] Integração com pelo menos uma API externa
-- [ ] Processamento de dados não estruturados
-- [ ] Databricks App com frontend
-- [ ] Agente de IA com ferramentas de leitura e escrita
+- recomendar vagas com base no perfil do usuário;
+- mostrar detalhes das vagas;
+- salvar vagas de interesse;
+- criar aplicações;
+- listar aplicações;
+- identificar aplicações paradas;
+- registrar notas de entrevista.
 
-## Stack planejada
+## Arquitetura
 
-- Databricks
-- Apache Spark
-- Delta Lake
-- Unity Catalog
-- Lakebase PostgreSQL
-- Databricks AI Search
-- Databricks Model Serving
-- MLflow
-- Streamlit
-- Adzuna API
-- Python
-- PySpark
+O projeto foi implementado no Databricks usando Spark, Delta Tables e Unity Catalog.
 
-## Fontes de dados
+Fluxo principal:
 
-### API principal
-
-- Adzuna API
-
-### Possíveis APIs complementares
-
-- RemoteOK API
-- USAJobs API
-
-## Arquitetura planejada
-
-1. Coletar vagas da Adzuna API.
-2. Armazenar as respostas brutas em formato JSON.
-3. Processar os dados com Spark.
-4. Criar camadas Bronze, Silver e Gold.
-5. Processar descrições de vagas como dados não estruturados.
-6. Criar embeddings para busca semântica.
-7. Armazenar dados transacionais no Lakebase.
-8. Criar um agente capaz de consultar e atualizar dados.
-9. Publicar uma interface com Databricks Apps.
-
-## Tabelas Lakebase planejadas
-
-- users
-- profiles
-- skills
-- job_postings
-- applications
-- saved_jobs
-- interview_notes
-- contacts
-
-## Status do projeto
-
-### Marco 1 — Fundação
-
-- [x] Repositório conectado ao Databricks
-- [x] Branch de desenvolvimento criada
-- [ ] Estrutura inicial criada
-- [ ] Ambiente Spark validado
-- [ ] Commit inicial realizado
-
-### Marco 2 — Ingestão
-
-- [ ] Configurar API da Adzuna
-- [ ] Criar primeira extração
-- [ ] Salvar dados brutos
-- [ ] Criar camada Bronze
-
-### Marco 3 — Transformação
-
-- [ ] Criar camada Silver
-- [ ] Criar camada Gold
-- [ ] Deduplicar vagas
-- [ ] Extrair habilidades e requisitos
-
-### Marco 4 — Aplicação
-
-- [ ] Criar Lakebase
-- [ ] Criar frontend
-- [ ] Criar agente
-- [ ] Implementar leitura e escrita
+```text
+RemoteOK API / arquivo JSON manual
+        ↓
+Bronze
+        ↓
+Silver
+        ↓
+Gold
+        ↓
+Chunks de descrições
+        ↓
+Extração de requisitos e skills
+        ↓
+Matching perfil x vagas
+        ↓
+Tabelas transacionais Delta
+        ↓
+Ferramentas do agente
+        ↓
+Mini copiloto textual
